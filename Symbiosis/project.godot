@@ -16,6 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Game"
+run/main_scene="res://Imports/GodotSimpleTextMenu-1da3bb5a22ec2201f137661e396f824fab8a6ac2/demo.tscn"
 config/icon="res://icon.png"
 
 [rendering]
