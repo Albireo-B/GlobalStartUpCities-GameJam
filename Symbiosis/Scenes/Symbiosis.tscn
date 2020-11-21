@@ -1,3 +1,189 @@
-[gd_scene format=2]
+[gd_scene load_steps=13 format=2]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Branch.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/Bush.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Root.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/GameController.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 55.4042, 45.6672 )
+
+[sub_resource type="Shader" id=4]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+render_mode unshaded;
+ 
+
+uniform float width : hint_range(0.0, 16.0);
+uniform vec4 outline_color : hint_color;
+ 
+void fragment()
+{
+    vec2 size = vec2(width) / vec2(textureSize(TEXTURE, 0));
+
+    vec4 sprite_color = texture(TEXTURE, UV);
+
+    float alpha = sprite_color.a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
+
+    vec3 final_color = mix(outline_color.rgb, sprite_color.rgb, sprite_color.a);
+    COLOR = vec4(final_color, clamp(alpha, 0.0, 1.0));
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+resource_local_to_scene = true
+shader = SubResource( 4 )
+shader_param/width = 0.0
+shader_param/outline_color = Color( 0.980392, 0.827451, 0, 1 )
+
+[sub_resource type="Shader" id=6]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+render_mode unshaded;
+ 
+
+uniform float width : hint_range(0.0, 16.0);
+uniform vec4 outline_color : hint_color;
+ 
+void fragment()
+{
+    vec2 size = vec2(width) / vec2(textureSize(TEXTURE, 0));
+
+    vec4 sprite_color = texture(TEXTURE, UV);
+
+    float alpha = sprite_color.a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
+
+    vec3 final_color = mix(outline_color.rgb, sprite_color.rgb, sprite_color.a);
+    COLOR = vec4(final_color, clamp(alpha, 0.0, 1.0));
+}"
+
+[sub_resource type="ShaderMaterial" id=7]
+resource_local_to_scene = true
+shader = SubResource( 6 )
+shader_param/width = 0.0
+shader_param/outline_color = Color( 0.980392, 0.827451, 0, 1 )
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 348.533, 421.424, -5.63359, -5.37877, 5.63359, 5.37877, 439.158, 424.59, 0, 0, 0, 0, 439.512, 502.725, -0.264866, 0, 0.264866, 0, 539.404, 500.417, 0, 0, 0, 0, 538.21, 477.016, 0, 0, 0, 0, 580.106, 477.016, 0, 0, 0, 0, 580.933, 404.083, 0, 0, 0, 0, 666.493, 403.73 )
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "testanim"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:unit_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[node name="Game" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Bush" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Root" type="Node2D" parent="Bush" groups=[
+"Root",
+]]
+position = Vector2( 489.078, 547.75 )
+script = ExtResource( 4 )
+
+[node name="icon" type="Sprite" parent="Bush/Root"]
+scale = Vector2( 1.66969, 1.47126 )
+texture = ExtResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="Bush/Root"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bush/Root/Area2D"]
+shape = SubResource( 3 )
+
+[node name="Label" type="Label" parent="Bush/Root"]
+margin_left = -16.4814
+margin_top = -5.99329
+margin_right = 23.5186
+margin_bottom = 8.00671
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Branch2" parent="Bush" groups=[
+"Branch",
+] instance=ExtResource( 2 )]
+
+[node name="Leave" parent="Bush/Branch2" index="3" groups=[
+"Leave",
+]]
+
+[node name="Sprite" parent="Bush/Branch2/Thorn" index="0"]
+material = SubResource( 5 )
+
+[node name="Branch" parent="Bush" groups=[
+"Branch",
+] instance=ExtResource( 2 )]
+position = Vector2( 628.742, 446.867 )
+rotation = 0.000397086
+
+[node name="Leave" parent="Bush/Branch" index="3" groups=[
+"Leave",
+]]
+
+[node name="Sprite" parent="Bush/Branch/Thorn" index="0"]
+material = SubResource( 7 )
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2( -0.794617, 0.959198 )
+curve = SubResource( 1 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2( 441.584, 438.891 )
+rotation = 1.54155
+offset = 105.441
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D"]
+anims/testanim = SubResource( 2 )
+
+[node name="icon" type="Sprite" parent="Path2D/PathFollow2D"]
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+[connection signal="right_clicked" from="Bush/Root" to="." method="_on_Object_right_clicked"]
+[connection signal="input_event" from="Bush/Root/Area2D" to="Bush/Root" method="_on_Area2D_input_event"]
+[connection signal="right_clicked" from="Bush/Branch2" to="." method="_on_Object_right_clicked"]
+[connection signal="right_clicked" from="Bush/Branch2/Leave" to="." method="_on_Object_right_clicked"]
+[connection signal="left_clicked" from="Bush/Branch2/Thorn" to="." method="_on_Thorn_left_clicked"]
+[connection signal="right_clicked" from="Bush/Branch2/Thorn" to="." method="_on_Object_right_clicked"]
+[connection signal="right_clicked" from="Bush/Branch" to="." method="_on_Object_right_clicked"]
+[connection signal="right_clicked" from="Bush/Branch/Leave" to="." method="_on_Object_right_clicked"]
+[connection signal="left_clicked" from="Bush/Branch/Thorn" to="." method="_on_Thorn_left_clicked"]
+[connection signal="right_clicked" from="Bush/Branch/Thorn" to="." method="_on_Object_right_clicked"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[editable path="Bush/Branch2"]
+
+[editable path="Bush/Branch"]

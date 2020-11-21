@@ -2,8 +2,7 @@ extends Node
 
 
 # Declare member variables here. Examples:
-export(int) var health;
-export(Script) var branch;
+export(float) var health = 100
 
 
 # Called when the node enters the scene tree for the first time.
@@ -12,5 +11,5 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	get_node("Label").text = String (round(health))

@@ -1,0 +1,132 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Scripts/Branch.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/Thorn.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Leave.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/Bud.gd" type="Script" id=5]
+[ext_resource path="res://outline.shader" type="Shader" id=6]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 46.5235, 41.0141 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 38.8693, 18.628 )
+
+[sub_resource type="ShaderMaterial" id=4]
+resource_local_to_scene = true
+shader = ExtResource( 6 )
+shader_param/width = 0.0
+shader_param/outline_color = Color( 0.980392, 0.827451, 0, 1 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 20.7849, 11.7546 )
+
+[node name="Branch" type="Node2D"]
+position = Vector2( 389.66, 465.759 )
+script = ExtResource( 1 )
+
+[node name="icon" type="Sprite" parent="."]
+scale = Vector2( 1.53266, 1.35159 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -20.5
+margin_top = -6.5
+margin_right = 19.5
+margin_bottom = 7.5
+rect_pivot_offset = Vector2( -365.16, -98.7591 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
+
+[node name="Leave" type="Node2D" parent="."]
+position = Vector2( 71.8376, -60.6129 )
+script = ExtResource( 4 )
+health = 100.0
+
+[node name="icon" type="Sprite" parent="Leave"]
+scale = Vector2( 1.26319, 0.656862 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="Leave"]
+margin_left = -17.534
+margin_top = -8.33093
+margin_right = 22.466
+margin_bottom = 5.66907
+rect_pivot_offset = Vector2( -365.16, -98.7591 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="Leave"]
+margin_left = -18.9498
+margin_top = -27.6804
+margin_right = 21.0502
+margin_bottom = -13.6804
+rect_pivot_offset = Vector2( -365.16, -98.7591 )
+custom_colors/font_color = Color( 0, 1, 0.203922, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area2D" type="Area2D" parent="Leave"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Leave/Area2D"]
+shape = SubResource( 1 )
+
+[node name="Bud" type="Node2D" parent="."]
+position = Vector2( -60.613, -53.8782 )
+script = ExtResource( 5 )
+
+[node name="icon" type="Sprite" parent="Bud"]
+scale = Vector2( 0.664403, 0.563662 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="Bud"]
+margin_left = -21.387
+margin_top = -6.62183
+margin_right = 18.613
+margin_bottom = 7.37817
+rect_pivot_offset = Vector2( -365.16, -98.7591 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Thorn" type="Node2D" parent="."]
+position = Vector2( -69.5927, 41.5311 )
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="Thorn"]
+material = SubResource( 4 )
+scale = Vector2( 0.693609, 0.385643 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="Thorn"]
+margin_left = -17.1267
+margin_top = -8.1156
+margin_right = 22.8733
+margin_bottom = 5.8844
+rect_pivot_offset = Vector2( -365.16, -98.7591 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ants" type="Node2D" parent="Thorn"]
+
+[node name="Area2D" type="Area2D" parent="Thorn"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Thorn/Area2D"]
+shape = SubResource( 3 )
+[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
+[connection signal="input_event" from="Leave/Area2D" to="Leave" method="_on_Area2D_input_event"]
+[connection signal="input_event" from="Thorn/Area2D" to="Thorn" method="_on_Area2D_input_event"]
